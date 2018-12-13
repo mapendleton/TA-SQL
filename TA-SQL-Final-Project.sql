@@ -213,7 +213,8 @@ INSERT INTO tbl_Borrower
 	('luke','34567 red ln, mango, 55306','987-678-9875'),
 	('terry','86465 red st, mango, 55350','355-543-6567'),
 	('matt','98534 white st, tree, 98755','443-675-8765'),
-	('mike','74356 black st, apple, 45673','778-546-7765')
+	('mike','74356 black st, apple, 45673','778-546-7765'),
+	('brooke','43223 mustard ln, hotdog, 23541','223-432-1123')
 ;
 SELECT * FROM tbl_Borrower;
 SELECT Copies_Book_ID, Copies_Num_Of_Copies AS 'Num Copies' FROM tbl_Book_Copies WHERE Copies_Branch_ID = 4;
@@ -280,8 +281,78 @@ INSERT INTO tbl_Book_Loans
 	(1014,4,2007,'11-16-2018','11-23-2018'),
 	(1017,4,2007,'11-17-2018','11-24-2018')
 ;
-SELECT * FROM tbl_Book_Copies;
+SELECT * FROM tbl_Book_Loans;
+
 /*QUERIES FOR THE INFORMATION*/
+
+/*TA FINAL PROJECT QUERY 1 - # of copies of The Lost Tribe in Sharpstown branch*/
+SELECT Book_Title,Branch_Name,Copies_Num_Of_Copies AS 'Number of Copies' 
+	FROM tbl_Book_Copies 
+	INNER JOIN tbl_Books ON tbl_Books.Book_ID = tbl_Book_Copies.Copies_Book_ID
+	INNER JOIN tbl_Library_Branch ON tbl_Library_Branch.Branch_ID = tbl_Book_Copies.Copies_Branch_ID
+	WHERE Book_Title = 'The Lost Tribe' AND Branch_Name = 'Sharpstown'
+;
+
+/*TA FINAL PROJECT QUERY 2 - # of copies of The Lost Tribe in all branches*/
+SELECT Branch_Name,Book_Title,Copies_Num_Of_Copies AS 'Number of Copies' 
+	FROM tbl_Book_Copies 
+	INNER JOIN tbl_Books ON tbl_Books.Book_ID = tbl_Book_Copies.Copies_Book_ID
+	INNER JOIN tbl_Library_Branch ON tbl_Library_Branch.Branch_ID = tbl_Book_Copies.Copies_Branch_ID
+	WHERE Book_Title = 'The Lost Tribe'
+;
+
+/*TA FINAL PROJECT QUERY 3 - names of borrowers with no books checked out*/ 
+SELECT Borrower_Name,Borrower_CardNo AS 'Card# - No Loans'
+	FROM tbl_Borrower
+	LEFT JOIN tbl_Book_Loans ON Loans_CardNo = Borrower_CardNo
+	WHERE Loans_CardNo IS NULL
+;
+
+/*TA FINAL PROJECT QUERY 4 - who and what book is due today*/ 
+
+/*What I would use to check what's due for today
+	DECLARE @CurrentDate AS DATE;
+	SET @CurrentDate = GETDATE();
+*/
+
+/*Example current date to get results*/
+DECLARE @CurrentDate AS DATE;
+SET @CurrentDate = '11-19-2018';
+
+SELECT Book_Title,Borrower_Name,Borrower_Address 
+	FROM tbl_Borrower
+	INNER JOIN tbl_Book_Loans ON Loans_CardNo = Borrower_CardNo
+	INNER JOIN tbl_Books ON Book_ID = Loans_Book_ID
+	INNER JOIN tbl_Library_Branch ON Branch_ID = Loans_Branch_ID
+	WHERE Branch_Name = 'Sharpstown' AND Loans_Date_Due = @CurrentDate
+;
+
+/*TA FINAL PROJECT QUERY 5 - total books loaned out for each branch*/ 
+
+SELECT Branch_Name, COUNT(Loans_Book_ID) AS '# books out'
+	FROM tbl_Book_Loans
+	INNER JOIN tbl_Library_Branch ON Branch_ID = Loans_Branch_ID
+	GROUP BY Branch_Name
+;
+
+/*TA FINAL PROJECT QUERY 6*/ 
+
+SELECT Borrower_Name, Borrower_Address, COUNT(Loans_Book_ID) AS '# books checked'
+	FROM tbl_Borrower
+	INNER JOIN tbl_Book_Loans ON Loans_CardNo = Borrower_CardNo
+	GROUP BY Borrower_Name, Borrower_Address
+		HAVING COUNT(Loans_Book_ID) > 5
+;
+
+/*TA FINAL PROJECT QUERY 7 - Num of copies authored by Stephen King at Central Branch*/ 
+
+SELECT Book_Title, Branch_Name, Copies_Num_Of_Copies
+	FROM tbl_Books
+	INNER JOIN tbl_Book_Copies ON Copies_Book_ID = Book_ID
+	INNER JOIN tbl_Library_Branch ON Branch_ID = Copies_Branch_ID
+	INNER JOIN tbl_Book_Authors ON Authors_Book_ID = Book_ID
+	WHERE Authors_Name = 'Stephen King' AND Branch_Name = 'Central'
+;
 
 
 

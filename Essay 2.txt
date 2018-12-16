@@ -1,0 +1,30 @@
+1. What is data-driven programming?
+	Is a style or type of programming, where the data controls the program. To change the program you change the data not the code. 
+
+2. What is a database-driven website?
+	A website that is database-driven has it's data stored in a database and is considered to be dynamic, whereas a webpage that has it's data directly in the html file is static, and will be the same unless someone changes it. A database driven website can change depending on the data in the database it gets it's information from.
+
+3. What is the data access layer?
+	The Layer that a user can use simply to access data stored somewhere.
+
+4. In SQL, what is the INSERT statement?
+	Is how you add data to a table, or 'insert' the data into columns.
+
+5. In SQL, what is the SELECT statement?
+	a query statement that finds specified data in a database.
+
+6. In SQL, what is the ORDER BY clause?
+	Takes the data selected from a SELECT statement and orders it in a way specified by the user.
+
+7. In SQL, what is OUTER JOIN?
+	Gets information from two tables that are related by a matching condition, but the outer join includes non-matching rows.
+
+8. In SQL, what is INNER JOIN?
+	Also gets information from two tables but only gets the rows that match the condition.
+
+9. In SQL, what is the WHERE clause?
+	Is used to give a condition to a statement. For example, a select statement might want to select all data from a name column who's first letter starts with a 'L'.
+The WHERE clause would be used to get only the names starting with 'L'.
+
+10. In SQL, what is the DELETE command?
+	Deletes data from tables. Can be used with the WHERE clause to specify information to be deleted, or can just delete all information.
